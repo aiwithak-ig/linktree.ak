@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI, Science, Technology &amp; Engineering | Links</title>
 <meta name="description" content="Saw it in a Reel? The link is here.">
-<meta name="theme-color" content="#f6efe4">
+<meta name="theme-color" content="#eadccd">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
   :root {
-    --bg: #f6efe4;
-    --panel: #ede2d0;
-    --panel-hi: #f2e9db;
-    --line: #dccbb3;
+    --bg: #eadccd;
+    --panel: #e2d1bc;
+    --panel-hi: #e6d7c5;
+    --line: #d3bca2;
     --text: #2b1d14;
     --muted: #6b5544;
-    --accent: #8f5127;
+    --accent: #80451e;
     --accent-ink: #fbf5ec;
     --display: "Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -42,15 +42,12 @@
     overflow-x: hidden;
   }
 
-  /* warm dot grid + soft glow behind the header */
+  /* beige wash deepening toward the bottom */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background-image: radial-gradient(rgba(120,80,50,0.10) 1px, transparent 1px);
-    background-size: 22px 22px;
-    mask-image: linear-gradient(to bottom, transparent 0%, #000 45%, transparent 90%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 45%, transparent 90%);
+    background: linear-gradient(to bottom, transparent 35%, rgba(176,142,104,0.26) 100%);
     pointer-events: none;
   }
   body::after {
@@ -84,6 +81,9 @@
     aspect-ratio: 4 / 5;
     overflow: hidden;
     background: #2a1d14;
+    /* last strip goes see-through so the page texture carries on */
+    mask-image: linear-gradient(to bottom, #000 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 90%, transparent 100%);
   }
   .cover img {
     display: block;
@@ -92,26 +92,45 @@
     object-fit: cover;
     object-position: 50% 85%;
   }
+  /* warm glow rising from the page: dark -> caramel -> cream, never grey */
+  .cover::before,
   .cover::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(74,48,30,0) 72%, rgba(122,86,58,0.45) 84%, rgba(222,204,180,0.9) 94%, var(--bg) 100%);
     pointer-events: none;
+  }
+  .cover::before {
+    background: linear-gradient(to bottom,
+      rgba(143,81,39,0) 68%,
+      rgba(143,81,39,0.12) 76%,
+      rgba(176,112,62,0.2) 83%,
+      rgba(176,112,62,0) 95%);
+    mix-blend-mode: screen;
+  }
+  .cover::after {
+    background: linear-gradient(to bottom,
+      rgba(234,220,205,0) 71%,
+      rgba(204,160,116,0.14) 77%,
+      rgba(216,182,145,0.5) 83%,
+      rgba(228,209,186,0.86) 88%,
+      rgba(234,220,205,0.97) 91.5%,
+      var(--bg) 94%);
   }
 
   .intro {
     position: relative;
     z-index: 2;
-    margin-top: 6px;
+    margin-top: -48px;
   }
+  .intro h1 { text-shadow: 0 0 18px rgba(234,220,205,0.9); }
 
   @media (min-width: 480px) {
     .wrap { padding-top: 28px; }
-    .cover { margin: 0; border-radius: 24px; }
-    /* framed photo on wide screens, no fade needed */
-    .cover::after { display: none; }
-    .intro { margin-top: 22px; }
+    .cover {
+      margin: 0;
+      border-radius: 24px 24px 0 0;
+    }
   }
 
   h1 {
@@ -122,6 +141,7 @@
   }
 
   .handle {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -133,6 +153,28 @@
     font-size: 0.8rem;
     color: var(--accent);
     background: rgba(143,81,39,0.08);
+    text-decoration: none;
+    transition: background .18s ease, border-color .18s ease, transform .18s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* invisible hit area, 44px tall */
+  .handle::before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    top: 50%;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+  .handle:hover {
+    background: rgba(143,81,39,0.16);
+    border-color: rgba(143,81,39,0.55);
+  }
+  .handle:active { transform: scale(0.96); }
+  .handle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
   }
   .handle .dot {
     width: 6px;
@@ -160,7 +202,7 @@
   .link {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     min-height: 64px;
     padding: 12px 16px 12px 12px;
     border: 1px solid var(--line);
@@ -198,15 +240,16 @@
   .title {
     display: block;
     font-weight: 500;
-    font-size: 1.02rem;
+    font-size: clamp(0.84rem, 3.9vw, 1.02rem);
     letter-spacing: -0.01em;
   }
   .sub {
     display: block;
     margin-top: 2px;
     font-family: var(--mono);
-    font-size: 0.74rem;
+    font-size: clamp(0.6rem, 2.55vw, 0.74rem);
     color: var(--muted);
+    letter-spacing: -0.02em;
   }
 
   .arrow {
@@ -224,7 +267,7 @@
     text-align: center;
     font-family: var(--mono);
     font-size: 0.75rem;
-    color: #7a6352;
+    color: #705948;
   }
 
   /* staggered load-in */
@@ -238,8 +281,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; animation: none; }
-    .link, .arrow { transition: none; }
-    .link:hover, .link:active { transform: none; }
+    .link, .arrow, .handle { transition: none; }
+    .link:hover, .link:active, .handle:active { transform: none; }
     .link:hover .arrow { transform: none; }
   }
 </style>
@@ -252,7 +295,7 @@
       </div>
       <div class="intro">
         <h1 class="reveal" style="--i:1;font-size:1.4rem;text-wrap:balance">AI, Science, Technology &amp; Engineering</h1>
-        <span class="handle reveal" style="--i:2"><span class="dot" aria-hidden="true"></span>@aiwith.ak</span>
+        <a class="handle reveal" style="--i:2" href="https://www.instagram.com/aiwith.ak/" target="_blank" rel="noopener noreferrer" aria-label="@aiwith.ak on Instagram (opens in a new tab)"><span class="dot" aria-hidden="true"></span>@aiwith.ak</a>
         <p class="bio reveal" style="--i:3">Saw it in a Reel? The link is here.</p>
       </div>
     </header>
@@ -278,7 +321,7 @@
         icon: "mic"
       },
       {
-        title: "AI Research to read before 2026",
+        title: "AI Research Before 2027 Begins",
         subtitle: "aiwithak-ig.github.io/ai-research-2026",
         url: "https://aiwithak-ig.github.io/ai-research-2026",
         icon: "link"
